@@ -1,46 +1,69 @@
-# Getting Started with Create React App and Redux
+# EShop-Ecommerce Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+## Technologies Used
 
-## Available Scripts
+Here is a list of dependencies used in our Ecommerce Application:
 
-In the project directory, you can run:
+- **@headlessui/react** (v1.7.17)
+  - Headless UI components for React.
 
-### `npm start`
+- **@headlessui/vue** (v1.7.16)
+  - Headless UI components for Vue.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **@heroicons/react** (v2.0.18)
+  - A set of free, MIT-licensed high-quality SVG icons for you to use in your web projects.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **@heroicons/vue** (v2.0.18)
+  - Vue bindings for Heroicons.
 
-### `npm test`
+- **@reduxjs/toolkit** (v1.9.7)
+  - A set of tools to help simplify Redux logic.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **@tailwindcss/aspect-ratio** (v0.4.2)
+  - Tailwind CSS plugin for aspect ratio utilities.
 
-### `npm run build`
+- **@tailwindcss/forms** (v0.5.7)
+  - Tailwind CSS plugin for styling form elements.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **@testing-library/jest-dom** (v5.17.0)
+  - Jest DOM testing utilities.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **@testing-library/react** (v13.4.0)
+  - Simple and complete React DOM testing utilities.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **@testing-library/user-event** (v14.5.1)
+  - Fire events the same way the user does.
 
-### `npm run eject`
+- **react** (v18.2.0)
+  - A JavaScript library for building user interfaces.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **react-dom** (v18.2.0)
+  - React package for working with the DOM.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **react-hook-form** (v7.48.2)
+  - Performant, flexible, and extensible forms with easy-to-use React hooks.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **react-redux** (v8.1.3)
+  - Official React bindings for Redux.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **react-router-dom** (v6.18.0)
+  - DOM bindings for React Router.
 
-## Learn More
+- **react-scripts** (v5.0.1)
+  - Configuration and scripts for Create React App.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **web-vitals** (v2.1.4)
+  - Library for measuring key user-centric web vitals.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Getting Started
+
+To get started with development:
+
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Run the application with `npm start`.
+
+## ScreenShot
+
+
+
