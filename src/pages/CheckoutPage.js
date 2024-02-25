@@ -9,13 +9,10 @@ import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { discountedPrice } from "../app/data";
 import {
-  
   deleteItemFromCartAsync,
   increment,
-  
   incrementAsync,
   updateCartAsync,
-  
 } from '../features/cart/CartSlice'
 
 import { createOrderAsync } from "../features/order/OrderSlice";
@@ -27,33 +24,45 @@ import { updateUserAsync } from "../features/user/userSlice";
  
  
  export default function CheckoutPage(){
-  const user=useSelector((state)=>state.user.userInfo);
-  const x=useSelector((state)=>state.user.userInfo.addresses);
+  
   const [selectedAddress,setSelectedAddress]=useState(null);
-const [PaymentMethod,setPaymentMethod]=useState('cash');
+  const user=useSelector((state)=>state.user.userInfo);
+const [paymentMethod,setpaymentMethod]=useState('cash');
 const currentOrder=useSelector((state)=>state.order.currentOrder);
-console.log(PaymentMethod);
+console.log(paymentMethod);
 const handleAddress=(e)=>{
     setSelectedAddress(user.addresses[e.target.value]);
     console.log(user.addresses[e.target.value]);
-
 }
 const handlePayment=(e)=>{
-  setPaymentMethod(e.target.value);
+  setpaymentMethod(e.target.value);
   console.log(e.target.value);
 }
 console.log(user);
 const handleOrder=(e)=>{
-  // setPaymentMethod(e.target.value);
+  // setpaymentMethod(e.target.value);
   // todo:redirect to order success page
   // todo:clear cart after order
   // todo:on server change the stock number
-  const order={items,totalAmount,totalItems,user,PaymentMethod,selectedAddress,
-    status:'pending'  
-    // other status can be delievered or received;
+  if (selectedAddress && paymentMethod) {
+    const order = {
+      items,
+      totalAmount,
+      totalItems,
+      user: user.id,
+      paymentMethod,
+      selectedAddress,
+      status: 'pending', // other status can be delivered, received.
+    };
+    dispatch(createOrderAsync(order));
+    // need to redirect from here to a new page of order success.
+  } else {
+    
+    alert('Enter Address and Payment method');
   }
-  dispatch(createOrderAsync(order));
- 
+}
+const prin=(data)=>{
+  console.log(data);
 }
 
 
@@ -67,18 +76,19 @@ const handleOrder=(e)=>{
   
   
   const items=useSelector((state)=>state.cart.items);
-  const totalAmount=items.reduce((amount,item)=>discountedPrice(item)*item.quantity+amount,0);
+  const totalAmount=items.reduce((amount,item)=>discountedPrice(item.product )*item.quantity+amount,0);
   const totalItems=items.reduce((total,item)=>item.quantity+total,0);
   const dispatch=useDispatch();
   const handleQuantity=(e,item)=>{
-    dispatch(updateCartAsync({...item,quantity:+e.target.value}));
-    
+    dispatch(updateCartAsync({id:item.id,quantity:+e.target.value}));
   }
   const handleRemove=(e,id)=>{
     dispatch(deleteItemFromCartAsync(id));
   }
     const [open, setOpen] = useState(true)
+  
     return (
+       
 
         <>
           {!items.length && <Navigate to='/' replace={true}></Navigate>}
@@ -88,12 +98,24 @@ const handleOrder=(e)=>{
          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
         <div className="lg:col-span-3">
-         <form className="bg-white px-5 mt-12 py-12 " noValidate onSubmit={handleSubmit((data)=>{
-            console.log(data);
-            dispatch(updateUserAsync({...user,addresses:[...user.addresses,data]}));
-            reset();
+        {user!=null &&  <form className="bg-white px-5 mt-12 py-12 " noValidate onSubmit={handleSubmit((data)=>{
+           
+            {
+               prin({
+                ...user,
+                addresses: [...user.addresses, data],
+              })
+              dispatch(
+                updateUserAsync({
+                  ...user,
+                  addresses: [...user.addresses, data],
+                })
+              )
+              reset()
+            }
             
-         })}>
+          })}
+          >
          <div className="space-y-12">
        
         <div className="border-b border-gray-900/10 pb-12">
@@ -232,7 +254,7 @@ const handleOrder=(e)=>{
             Choose from existing address
           </p>
           <ul role="list" className="divide-y divide-gray-100">
-      {  user.addresses && user.addresses.map((person,index) => (
+      { user!=null && user.addresses!=null && user.addresses.length>0 &&  user.addresses.map((person,index) => (
         <li key={index} className="flex justify-between gap-x-6 py-5 px-5 border-solid border-2 border-gray-200">
           <div className="flex min-w-0 gap-x-4 ">
           <input
@@ -278,7 +300,7 @@ const handleOrder=(e)=>{
                     name="Payments"
                     type="radio"
                     value="cash"
-                    checked={PaymentMethod==="cash"}
+                    checked={paymentMethod==="cash"}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="Cash" className="block text-sm font-medium leading-6 text-gray-900">
@@ -293,7 +315,7 @@ const handleOrder=(e)=>{
                     id="Card"
                     name="Payments"
                     value="card"
-                    checked={PaymentMethod==="card"}
+                    checked={paymentMethod==="card"}
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
@@ -309,7 +331,7 @@ const handleOrder=(e)=>{
       </div>
 
       
-    </form>
+    </form>}
     
     </div>
     <div className="lg:col-span-2">
@@ -322,8 +344,8 @@ const handleOrder=(e)=>{
                               <li key={product.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={product.thumbnail}
-                                    alt={product.title}
+                                    src={product.product.thumbnail}
+                                    alt={product.product.title}
                                     className="h-full w-full object-cover object-center"
                                   />
                                 </div>
@@ -332,11 +354,11 @@ const handleOrder=(e)=>{
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <a href={product.href}>{product.name}</a>
+                                        <a href={product.product.href}>{product.product.productname}</a>
                                       </h3>
-                                      <p className="ml-4">{discountedPrice(product)}</p>
+                                      <p className="ml-4">{discountedPrice(product.product)}</p>
                                     </div>
-                                    <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{product.product.brand}</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
 
@@ -344,11 +366,20 @@ const handleOrder=(e)=>{
                                     <label htmlFor="quantity" className="inline mr-5 text-sm font-medium leading-6 text-gray-900">
                                     Qty
                                          </label>
-                                     
+                                         <select
+                         
+                            onChange={(e) => handleQuantity(e, product)}
+                           
+                            
+                            value={product.quantity}
+                          
+                            
+                                       
+                            
+                          
+                          >
 
-                                       <select onChange={(e)=>{
-                                        handleQuantity(e,product)
-                                       }}>
+                                       
                                         <option value="1">
                                           1
 
@@ -380,7 +411,8 @@ const handleOrder=(e)=>{
                                     <div className="flex">
                                       <button
                                         onClick={(e)=>{
-                                          handleRemove(e,product.id);
+                                          handleRemove(e,product.product.id);
+                                          e.preventDefault();
                                         }}
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -413,6 +445,7 @@ const handleOrder=(e)=>{
                         <div
                         onClick={(e)=>{
                           handleOrder(e);
+                          
                         }}
                           className="flex  cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
@@ -450,4 +483,4 @@ const handleOrder=(e)=>{
    </>
 
     );
-}
+                      }

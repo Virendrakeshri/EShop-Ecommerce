@@ -7,10 +7,10 @@ import { fetchAllProducts ,fetchProductsByFilters,fetchCategories,fetchbrands, f
 const initialState = {
   products: [],
   status: 'idle',
-  totalItems:0,
+  totalItems:98,
   brands:[],
   categories:[],
-  SelectedProduct:null
+  SelectedProduct:null,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -30,6 +30,7 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
   'product/fetchProductsByFilters',
   async ({filter,Sort,pagination}) => {
     const response = await fetchProductsByFilters(filter,Sort,pagination);
+    console.log("The res headers", response.headers);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -97,8 +98,6 @@ export const productSlice = createSlice({
     builder
     .addCase(fetchAllProductsAsync.pending,(state,action)=>{
       state.status='loading';
-      
-
 
     })
     .addCase(fetchAllProductsAsync.fulfilled,(state,action)=>{
@@ -106,6 +105,7 @@ export const productSlice = createSlice({
       state.status='idle';
       state.products=action.payload.products;
       state.totalItems=action.payload.totalItems;
+    
 
 
     })
@@ -117,9 +117,9 @@ export const productSlice = createSlice({
     })
     .addCase(fetchProductsByFiltersAsync.fulfilled,(state,action)=>{
     
-      state.status='idle';
-      state.products=action.payload.products;
-      state.totalItems=action.payload.totalItems;
+      state.status = 'idle';
+      state.products = action.payload.products;
+      state.totalItems = action.payload.totalItems;
 
     })
     .addCase(fetchBrandsAsync.pending,(state,action)=>{
@@ -141,6 +141,7 @@ export const productSlice = createSlice({
     })
     .addCase(fetchProductsByIdAsync.pending,(state,action)=>{
       state.status='pending';
+      state.SelectedProduct=null;
     })
     .addCase(fetchProductsByIdAsync.fulfilled,(state,action)=>{
       state.SelectedProduct=action.payload;
@@ -164,6 +165,10 @@ export const productSlice = createSlice({
       const index=state.products.findIndex((product)=>product.id===action.payload.id);
       state.products[index]=action.payload;
     })
+    // .addCase(fetchAllProducts.fulfilled,(state,action)=>{
+    //   state.status='idle';
+    //   state.totalItems=10000;
+    // })
    
     
 

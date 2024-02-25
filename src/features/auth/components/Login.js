@@ -15,15 +15,16 @@ export  default function  Login() {
   const user=useSelector((state)=>state.auth.loggedInuser);
   const error=useSelector((state)=>state.auth.error);
   const dispatch=useDispatch();
-
-  
-  
-
+  if(user){
+    console.log(user);
+  }
+ 
 
   return (
     
     <div>
-      {user && <Navigate to='/' replace={true}></Navigate>}
+      {user &&   <Navigate to='/' replace={true}></Navigate>}
+      {/* {user && user.role=='admin' && <Navigate to='/admin' replace={true}></Navigate>} */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img

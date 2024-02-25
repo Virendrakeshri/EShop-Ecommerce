@@ -27,13 +27,14 @@ import UsersOrdersPage from './pages/UserOrdersPage';
 import UserProfile from './features/user/components/UserProfile';
 import UserProfilePage from './pages/UserProfilePage';
 import Protected from './features/auth/components/Protected ';
-import { fetchLoggedInUserAsync } from './features/user/userSlice';
+import { fetchLoggedInUserAsync, fetchLoggedInUserOrdersAsync } from './features/user/userSlice';
 import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
 import AdminHome from './pages/AdminHome';
 import ProductForm from './features/admin/components/ProductForm';
 import ProductFormPage from './pages/ProductFormPage';
 import AdminProductDetailPage from './pages/AdminProductDetailPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
+import fetchLoggedInUserOrders from './features/user/userApi';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -103,13 +104,21 @@ const router = createBrowserRouter([
 function App() {
   const dispatch=useDispatch();
   const user=useSelector((state)=>state.auth.loggedInuser);
+  
+   
+  
   if(user){
+
+  
   const x=user.id;
-  console.log(x);
+  
   dispatch(fetchItemsByUserIdAsync(x));
   dispatch(fetchLoggedInUserAsync(x));
+}
 
-  }
+
+  
+  
   return (
   
      <div className='App'>

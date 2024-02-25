@@ -40,6 +40,7 @@ export default function ProductOverview() {
   const dispatch=useDispatch();
   const params=useParams();
   useEffect(()=>{
+    console.log(params.id);
     dispatch(fetchProductsByIdAsync(params.id));
   },[dispatch,params.id])
   const user=useSelector((state)=>state.auth.loggedInuser);
@@ -48,7 +49,7 @@ export default function ProductOverview() {
   console.log(user.id);
   const handleCart=(e)=>{
     e.preventDefault();
-    const newItem={...product,quantity:1,user:user.id};
+    const newItem={product:product.id,quantity:1,user:user.id};
     delete newItem['id'];
     dispatch(addToCartAsync(newItem));
    

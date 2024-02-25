@@ -53,7 +53,7 @@ const user=useSelector((state)=>state.user.userInfo);
   } = useForm();
   
 
-  const x=useSelector((state)=>state.user.userInfo.addresses);
+  
   
 
   return (
@@ -61,9 +61,9 @@ const user=useSelector((state)=>state.user.userInfo);
        <div>
        
        < div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-white mt-12">
-       <h3 className="text-xl font-bold tracking-tight text-gray-900">Name:{user.name ? user.name : 'New User'}</h3>
+       <h3 className="text-xl font-bold tracking-tight text-gray-900">Name:{ user && user.name ? user.name : 'New User'}</h3>
        <h3 className="text-xl font-bold tracking-tight text-red-900">Email address:{user && user.email}</h3>
-       { user.role=="admin" ? <h3 className="text-xl font-bold tracking-tight text-red-900">role:{user && user.role}</h3> :null}
+       { user && user.role=="admin" ? <h3 className="text-xl font-bold tracking-tight text-red-900">role:{user && user.role}</h3> :null}
           
             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                 <button
@@ -221,11 +221,11 @@ const user=useSelector((state)=>state.user.userInfo);
                               </form> : null}
 
                        <p className="mt-0.5 text-sm text-gray-500">Your Address</p>
-                  {user && user.addresses.length && user.addresses.map((address,index)=>(
+                  {user && user.addresses && user.addresses.length>0 && user.addresses.map((address,index)=>(
                     <div>
                       { index==selectedEditIndex ?
                        <form className="bg-white px-5 mt-12 py-12 " noValidate onSubmit={handleSubmit((data)=>{
-            console.log(data);
+              console.log(data);
             handleEdit(data,index);
             reset();
             setSelectedEditIndex(-1);
@@ -379,14 +379,14 @@ const user=useSelector((state)=>state.user.userInfo);
                <div className="flex min-w-0 gap-x-4 ">
                  <div className="min-w-0 flex-auto">
                    <p className="text-sm font-semibold leading-6 text-gray-900">{address.name}</p>
-                   <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.street}</p>
+                   <p className="mt-1 truncate text-xs leading-5 text-gray-500">{ address.street}</p>
                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.pinCode}</p>
                  </div>
                 
                </div>
                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                  <p className="text-sm leading-6 text-gray-900">{address.phone}</p>
-                 <p className="text-sm leading-6 text-gray-900">{address.City}</p>
+                 <p className="text-sm leading-6 text-gray-900">{ address.City}</p>
                  </div>
                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                  <button
@@ -402,6 +402,7 @@ const user=useSelector((state)=>state.user.userInfo);
                                <button
                                         onClick={(e)=>{
                                           handleRemove(e,index);
+                                          e.preventDefault();
                                           setSowAddAddressForm(false);
 
                                         }}
